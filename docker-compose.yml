@@ -1,0 +1,37 @@
+version: '3.8'
+services:
+
+  prd-drone-server:
+    container_name: prd-drone-server
+    image: drone/drone:latest
+    restart: always
+    ports:
+      - 8880:80
+      - 4444:443
+    networks:
+      home-services:
+    volumes:
+      - ./data:/data
+    env_file: prd-drone-server.env
+
+  prd-drone-runner:
+    container_name: prd-drone-runner
+    image: drone/drone-runner-docker:latest
+    restart: always
+    ports:
+      - 3330:3000
+    networks:
+      home-services:
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    env_file: prd-drone-runner.env
+
+# NETWORKS
+networks:
+
+    home-services:
+      driver: bridge
+      name: home-services
+      ipam:
+        config:
+          - subnet: 172.20.0.0/16
