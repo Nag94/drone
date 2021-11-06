@@ -1,4 +1,4 @@
-version: '3.8'
+version: "3.8"
 services:
   prd-drone-server:
     container_name: prd-drone-server
@@ -17,6 +17,7 @@ services:
     restart: always
     env_file: prd-drone-runner.env
     networks:
+      - reverse-proxy
       - drone
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
